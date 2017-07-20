@@ -1,7 +1,5 @@
-# p5.js
+[isomer.js](http://jdan.github.io/isomer/) is "an isometric graphics library for HTML5 canvas".
 
-[p5.js](https://p5js.org/) is a JS client-side library for creating graphic and interactive experiences, based on the core principles of Processing.
+Hasn't been updated in a while but is nice and tidy, so fun to play with.
 
-This app is a starter project, which implements the [getting started tutorial example](https://p5js.org/get-started/) project, that captures mouse movement and prints circles as you move it around. It's a useful starting point for creating your own p5.js-based projects.
-
-![](https://cdn.glitch.com/46b12cac-bcfe-404e-b9e0-df1373842403%2Fp5jsGIF.gif?1496789332160)
+[demo](https://isomerjs-freezer-map.glitch.me/): try running `freezerFun(true)` from the console.
