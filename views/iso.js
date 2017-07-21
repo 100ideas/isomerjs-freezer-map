@@ -19,6 +19,7 @@ window.onload = function() {
   
   /*- create base geometry ------------------------------*/
   let red = new Color(160, 60, 50)
+  let red_z = new Color(160, 200, 200, 0.2)
   let blue = new Color(80, 80, 160)
   let blue_z = new Color(40,40,160,.2)
   let green = new Color(50, 160, 60)
@@ -54,7 +55,7 @@ window.onload = function() {
   /*- render -------------------------------------*/
   
   // coordinates of drawer/cubby selection - indexed from 1...4 [z,x,y]
-  function drawIsoFreezer (sel = {z:3, x:1, y:3}) {
+  function drawIsoFreezer (sel = {z:3, x:2, y:3}) {
   
     // clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -62,12 +63,8 @@ window.onload = function() {
     // transform parameters for base selecton geometry 
     //   shrinks in xz plane to create spacing
     let sel_xyz = [sel.x - 2, sel.y - 6, sel.z]
-    // let sel_xyz = {x: sel.x - 2, y: sel.y - 6, z: sel.z}
     
-    // console.log(`sel: ${sel}`)
-    // console.dir(sel)
-    // console.log(`sel_xyz: ${sel_xyz}`)
-    // console.dir(sel_xyz)
+    let boxColor = red
 
     // build 2d array of drawers - draw drawers by row, starting from 
     //   max_x position, bottom row first
@@ -76,25 +73,33 @@ window.onload = function() {
       for (let j=0; j<4; j++){
         if (j === sel.z - 1 && i === sel.x - 1){
           selScale = 2
-          selTrans = -3
-          iso.add(drawerBox.scale(Pdrawer, 1.3, selScale+.05, 1.3).translate(i,selTrans-.10,j), highlightColor)
-          iso.add(drawerBox.scale(Pdrawer, 1, selScale, 1).translate(i,selTrans,j), blue)
+          selTrans = -3   
+          
+          // iso.add(drawerBox.scale(Pdrawer, 1.3, selScale+.05, 1.3).translate(i,selTrans-.10,j), highlightColor)
+          // iso.add(drawerBox.scale(Pdrawer, 1, selScale, 1).translate(i,selTrans,j), blue)
+          
+          for (let k=4; k>0; k--){
+            iso.add(selBox.scale(Pdrawer, 1, 0.85, 1).translate(i,k-1,j), k == sel.y ? green : red)  
+          }
+          
+          // make occluding boxes transparent
+          boxColor = red_z
         } else {
-          iso.add(drawerBox.scale(Pdrawer, 1, 1, 1).translate(i,0,j), red)
+          iso.add(drawerBox.scale(Pdrawer, 1, 1, 1).translate(i,0,j), boxColor)
         }
-        // iso.add(drawerBox.scale(Pdrawer, 1, selScale, 1).translate(i,selTrans,j), selColor)
       }
     }
 
     // drawer the freezer "volume" on top of drawers to shade them
-    iso.add(freezerBox, blue_z)
+    // iso.add(freezerBox, blue_z)
 
     // highlight selection
-    iso.add(drawerBox.translate(sel_xyz[0], -5, sel_xyz[2]), blue)
-    // iso.add(drawerBox.translate(sel_xyz.x, -5, sel_xyz.z), blue)
-    iso.add(selBox.translate(...sel_xyz), green)
-    // iso.add(selBox.translate(sel_xyz.x, sel_xyz.y, sel_xyz.z), green)
-    iso.add(selPath.translate(sel_xyz[0] + .05, sel_xyz[1], sel_xyz[2]), green)
+    // iso.add(drawerBox.translate(sel_xyz[0], -5, sel_xyz[2]), red)
+    // selected bin 
+    // iso.add(selBox.translate(...sel_xyz), green)
+    // iso.add(selPath.translate(sel_xyz[0] + .05, sel_xyz[1], sel_xyz[2]), green)
+    // iso.add(selBox.translate(sel_xyz[0], 1, sel_xyz[2]), green)
+    iso.add(selPath.translate(sel_xyz[0] + .05, 1.07, sel_xyz[2]), green)
   }
   
   drawIsoFreezer()
